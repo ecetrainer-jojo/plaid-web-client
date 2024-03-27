@@ -8,22 +8,25 @@ import Context from "./Context";
 import styles from "./App.module.scss";
 
 const App = () => {
-  const { linkSuccess, isItemAccess, isPaymentInitiation, dispatch } = useContext(Context);
+  const { linkSuccess, isItemAccess, isPaymentInitiation, dispatch ,products} = useContext(Context);
+  console.log(`The products are: ${products}`)
 
   const getInfo = useCallback(async () => {
     const response = await fetch("/api/info", { method: "POST" });
     if (!response.ok) {
+      console.log("The info has not been reached....")
       dispatch({ type: "SET_STATE", state: { backend: false } });
       return { paymentInitiation: false };
     }
     const data = await response.json();
-    const paymentInitiation: boolean = data.products.includes(
+    console.log(data)
+    const paymentInitiation: boolean = data.plaidProducts.includes(
       "payment_initiation"
     );
     dispatch({
       type: "SET_STATE",
       state: {
-        products: data.products,
+        products: data.plaidProducts,
         isPaymentInitiation: paymentInitiation,
       },
     });
@@ -55,10 +58,11 @@ const App = () => {
           });
           return;
         }
-        dispatch({ type: "SET_STATE", state: { linkToken: data.link_token } });
+        console.log(`The response is back, linkToken: ${data.linkToken}`)
+        dispatch({ type: "SET_STATE", state: { linkToken: data.linkToken } });
       }
       // Save the link_token to be used later in the Oauth flow.
-      localStorage.setItem("link_token", data.link_token);
+      localStorage.setItem("link_token", data.linkToken);
     },
     [dispatch]
   );
@@ -77,7 +81,7 @@ const App = () => {
         });
         return;
       }
-      generateToken(paymentInitiation);
+      await generateToken(paymentInitiation);
     };
     init();
   }, [dispatch, generateToken, getInfo]);

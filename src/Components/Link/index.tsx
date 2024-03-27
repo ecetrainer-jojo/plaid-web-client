@@ -34,8 +34,8 @@ const Link = () => {
         dispatch({
           type: "SET_STATE",
           state: {
-            itemId: data.item_id,
-            accessToken: data.access_token,
+            itemId: data.itemId,
+            accessToken: data.accessToken,
             isItemAccess: true,
           },
         });
