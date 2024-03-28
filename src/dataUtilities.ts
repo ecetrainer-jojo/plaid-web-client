@@ -433,9 +433,9 @@ export const transformAuthData = (data: AuthGetResponse) => {
 };
 
 export const transformTransactionsData = (
-  data: {latest_transactions: Transaction[]}
+  data: {add_transactions: Transaction[]}
 ): Array<DataItem> => {
-  return data.latest_transactions!.map((t) => {
+  return data.add_transactions!.map((t) => {
     const item: DataItem = {
       name: t.name!,
       amount: formatCurrency(t.amount!, t.iso_currency_code),

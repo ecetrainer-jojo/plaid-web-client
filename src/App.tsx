@@ -9,7 +9,6 @@ import styles from "./App.module.scss";
 
 const App = () => {
   const { linkSuccess, isItemAccess, isPaymentInitiation, dispatch ,products} = useContext(Context);
-  console.log(`The products are: ${products}`)
 
   const getInfo = useCallback(async () => {
     const response = await fetch("/api/info", { method: "POST" });
